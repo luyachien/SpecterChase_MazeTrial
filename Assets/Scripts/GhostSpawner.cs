@@ -109,36 +109,53 @@ public class GhostSpawner : MonoBehaviour
             return;
         }
 
-        // 生成隨機位置
-        Vector3 randomSpawnPos;
-        NavMeshHit hit;
+        Vector3 spawnPosition = Vector3.zero;
+        bool foundValidSpawn = false;
         int attempts = 0;
-        bool foundValidPosition = false;
 
-        do
+        // 1. 嘗試在 spawnPoints 中選擇有效的位置
+        while (attempts < spawnPoints.Length && !foundValidSpawn)
+        {
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(spawnPoint.position, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                spawnPosition = hit.position;
+                foundValidSpawn = true;
+            }
+            attempts++;
+        }
+
+        // 2. 如果 spawnPoints 內沒找到有效位置，再嘗試隨機生成位置
+        attempts = 0;
+        while (!foundValidSpawn && attempts < 10)
         {
             float randomX = Random.Range(-35f, 38f);
             float randomZ = Random.Range(-50f, 45f);
-            randomSpawnPos = new Vector3(randomX, 1f, randomZ);
+            Vector3 randomPosition = new Vector3(randomX, 1f, randomZ);
 
-            if (NavMesh.SamplePosition(randomSpawnPos, out hit, 2.0f, NavMesh.AllAreas))
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPosition, out hit, 2.0f, NavMesh.AllAreas))
             {
-                foundValidPosition = true;
-                randomSpawnPos = hit.position;
+                // 3. 確保不與牆壁或其他物件重疊
+                if (Physics.OverlapSphere(hit.position, 1.0f).Length == 0)
+                {
+                    spawnPosition = hit.position;
+                    foundValidSpawn = true;
+                }
             }
-
             attempts++;
-        } while (!foundValidPosition && attempts < 10);
+        }
 
-        if (!foundValidPosition)
+        if (!foundValidSpawn)
         {
-            Debug.LogError("SpawnGhost: 找不到合適的 NavMesh 位置來生成鬼魂！");
+            Debug.LogError("SpawnGhost: 找不到合適的生成位置！");
             return;
         }
 
-        // 生成鬼魂（確保它是啟用的）
-        GameObject newGhost = Instantiate(ghostPrefab, randomSpawnPos, Quaternion.identity);
-        newGhost.SetActive(true); // **確保 Clone 出來的鬼魂是可見的**
+        // 4. 生成鬼魂並設定巡邏點
+        GameObject newGhost = Instantiate(ghostPrefab, spawnPosition, Quaternion.identity);
+        newGhost.SetActive(true);
 
         GhostAI ghostAI = newGhost.GetComponent<GhostAI>();
 

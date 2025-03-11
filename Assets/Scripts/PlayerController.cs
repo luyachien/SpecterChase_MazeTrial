@@ -1,39 +1,19 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;  // 引入 UI 命名空間
 
 public class PlayerController : MonoBehaviour
 {
-    public int health = 5;  // 玩家生命值
-    public Text healthText; // 生命值 UI 文字
-    public GameObject gameOverScreen; // 遊戲結束畫面
+    private HealthManager healthManager;
 
-    private void Start()
+    void Start()
     {
-        UpdateHealthUI(); // 初始化 UI 顯示
+        healthManager = FindFirstObjectByType<HealthManager>(); // 取得場景中第一個找到的 HealthManager
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ghost")) // 如果碰到的是鬼魂
+        if (other.CompareTag("Ghost")) // 如果碰到鬼魂
         {
-            health--; // 生命值 -1
-            UpdateHealthUI(); // 更新 UI
-
-            if (health <= 0)
-            {
-                GameOver(); // 生命歸 0，遊戲結束
-            }
+            healthManager.TakeDamage(1);
         }
-    }
-
-    void UpdateHealthUI()
-    {
-        healthText.text = "❤️ x " + health;  // 更新 UI 文字
-    }
-
-    void GameOver()
-    {
-        gameOverScreen.SetActive(true);  // 顯示遊戲結束畫面
-        Time.timeScale = 0; // 暫停遊戲
     }
 }
