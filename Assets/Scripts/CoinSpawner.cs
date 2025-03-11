@@ -17,6 +17,10 @@ public class CoinSpawner : MonoBehaviour
 
     void Start()
     {
+        if (coinPrefab.activeInHierarchy)
+        {
+            coinPrefab.SetActive(false); // 隱藏原始金幣預製體
+        }
         SpawnCoins();
     }
 
@@ -44,13 +48,16 @@ public class CoinSpawner : MonoBehaviour
 
                     // 生成金幣
                     GameObject coin = Instantiate(coinPrefab, randomPos, Quaternion.identity);
+                    coin.SetActive(true); // 確保 Clone 顯示
+
                     spawnedPositions.Add(randomPos);
 
                     // 確保金幣不會穿地
-                    if (coin.GetComponent<Rigidbody>() != null)
+                    Rigidbody rb = coin.GetComponent<Rigidbody>();
+                    if (rb != null)
                     {
-                        coin.GetComponent<Rigidbody>().isKinematic = true;
-                        coin.GetComponent<Rigidbody>().useGravity = false;
+                        rb.isKinematic = true;
+                        rb.useGravity = false;
                     }
 
                     spawned++;

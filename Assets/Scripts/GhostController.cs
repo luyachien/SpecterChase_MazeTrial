@@ -10,14 +10,23 @@ public class GhostController : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        if (patrolPoints.Length > 0)
+
+        if (patrolPoints == null || patrolPoints.Length == 0)
         {
-            agent.SetDestination(patrolPoints[currentPointIndex].position);
+            Debug.LogWarning("No patrol points assigned to " + gameObject.name);
+            return;
         }
+
+        agent.SetDestination(patrolPoints[currentPointIndex].position);
     }
 
     void Update()
     {
+        if (agent == null || patrolPoints == null || patrolPoints.Length == 0)
+        {
+            return;
+        }
+
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;

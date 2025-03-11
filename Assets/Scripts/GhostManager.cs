@@ -1,55 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class GhostManager : MonoBehaviour
 {
-    public GameObject ghostPrefab; // °­»îªº¹w»sÅé
-    public int minGhosts = 3; // ³Ì¤Ö°­»î¼Æ¶q
-    public int maxGhosts = 5; // ³Ì¦h°­»î¼Æ¶q
-    public int minPatrolPoints = 3; // ¨C°¦°­»î³Ì¤Ö¨µÅŞÂI¼Æ
-    public int maxPatrolPoints = 5; // ¨C°¦°­»î³Ì¦h¨µÅŞÂI¼Æ
-    public Vector3 mazeBoundsMin; // °g®c½d³ò³Ì¤p­È
-    public Vector3 mazeBoundsMax; // °g®c½d³ò³Ì¤j­È
-    public LayerMask groundLayer; // ¦aªO¹Ï¼h¡A½T«O¨µÅŞÂI¥i¦æ¨«
+    public GameObject ghostPrefab; 
+    public int minGhosts = 3;
+    public int maxGhosts = 5;
+    public int minPatrolPoints = 3;
+    public int maxPatrolPoints = 5;
+    public Vector3 mazeBoundsMin;
+    public Vector3 mazeBoundsMax;
+    public LayerMask groundLayer;
+    public float navMeshSampleDistance = 2.0f; // NavMeshç¯„åœæª¢æ¸¬è·é›¢
 
-    private List<GameObject> ghosts = new List<GameObject>(); // ¦s©ñ¥Í¦¨ªº°­»î
+    private List<GameObject> ghosts = new List<GameObject>();
 
     void Start()
     {
-        int ghostCount = Random.Range(minGhosts, maxGhosts + 1); // ÀH¾÷¨M©w°­»î¼Æ¶q
+        int ghostCount = Random.Range(minGhosts, maxGhosts + 1);
         for (int i = 0; i < ghostCount; i++)
         {
             SpawnGhost();
+        }
+
+        if (ghostPrefab != null)
+        {
+            Destroy(ghostPrefab);
         }
     }
 
     void SpawnGhost()
     {
-        Vector3 spawnPosition = GetRandomPosition(); // ÀH¾÷²£¥Í°­»îªº¦ì¸m
+        Vector3 spawnPosition = GetValidNavMeshPosition();
+        if (spawnPosition == Vector3.zero) return; // å¦‚æœæ²’æ‰¾åˆ°å¯è¡Œèµ°ä½ç½®ï¼Œå°±ä¸ç”Ÿæˆ
+
         GameObject ghost = Instantiate(ghostPrefab, spawnPosition, Quaternion.identity);
         ghosts.Add(ghost);
 
         GhostController ghostController = ghost.GetComponent<GhostController>();
-        ghostController.patrolPoints = GeneratePatrolRoute(); // ¤À°tÀH¾÷¨µÅŞ¸ô½u
+        ghostController.patrolPoints = GeneratePatrolRoute();
     }
 
-    Vector3 GetRandomPosition()
+    Vector3 GetValidNavMeshPosition()
     {
-        for (int i = 0; i < 10; i++) // ¹Á¸Õ 10 ¦¸¡A½T«O§ä¨ì¦X²zªº¦ì¸m
+        for (int i = 0; i < 10; i++) // æœ€å¤šå˜—è©¦ 10 æ¬¡
         {
             float x = Random.Range(mazeBoundsMin.x, mazeBoundsMax.x);
             float z = Random.Range(mazeBoundsMin.z, mazeBoundsMax.z);
-            Vector3 position = new Vector3(x, 1, z); // y=1¡AÁ×§K°­»î±¼¶i¦aªO
+            Vector3 randomPosition = new Vector3(x, 1, z);
 
-            // ÀË¬d³o­Ó¦ì¸m¬O§_¥i¦æ¨«
-            if (Physics.Raycast(position + Vector3.up * 2, Vector3.down, 3f, groundLayer))
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPosition, out hit, navMeshSampleDistance, NavMesh.AllAreas))
             {
-                return position;
+                return hit.position; // è¿”å›å¯è¡Œèµ°å€åŸŸçš„é»
             }
         }
-        return mazeBoundsMin; // §ä¤£¨ì¦X¾A¦ì¸m®É¡Aªğ¦^°g®cÃä¬É
+        Debug.LogWarning("Failed to find a valid NavMesh position.");
+        return Vector3.zero;
     }
 
     Transform[] GeneratePatrolRoute()
@@ -59,7 +67,9 @@ public class GhostManager : MonoBehaviour
 
         for (int i = 0; i < patrolCount; i++)
         {
-            Vector3 patrolPos = GetRandomPosition();
+            Vector3 patrolPos = GetValidNavMeshPosition();
+            if (patrolPos == Vector3.zero) continue; 
+
             GameObject patrolPoint = new GameObject("PatrolPoint" + i);
             patrolPoint.transform.position = patrolPos;
             patrolPoints[i] = patrolPoint.transform;
