@@ -57,23 +57,8 @@ public class HeartManager : MonoBehaviour
     // 遊戲結束
     void GameOver()
     {
-        gameOverPanel.SetActive(true); // 顯示 UI
-        Time.timeScale = 0f; // 暫停所有動作
         Debug.Log("遊戲結束！");
+        SceneManager.LoadScene("GameOverScene"); // 直接切換到遊戲結束畫面
     }
 
-    // 重新開始遊戲
-    public void RestartGame()
-    {
-        Debug.Log("重新開始按鈕被點擊");
-        Time.timeScale = 1f; // 恢復遊戲速度
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    // 回到主選單
-    public void GoToMainMenu()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
-    }
 }
