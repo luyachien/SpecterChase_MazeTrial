@@ -2,54 +2,29 @@
 
 public class PlayerController : MonoBehaviour
 {
-    private HeartManager heartManager; // 生命值管理器
+    private HeartManager heartManager;
+    private bool isInvincible = false; // 是否處於無敵狀態
+    public float invincibilityDuration = 1.0f; // 無敵時間 (1 秒)
 
     void Start()
     {
-        heartManager = FindFirstObjectByType<HeartManager>();
-        if (heartManager == null)
-        {
-            Debug.LogError("HeartManager 未找到！");
-        }
+        heartManager = FindFirstObjectByType<HeartManager>(); // 獲取 HeartManager
     }
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player 碰到了：" + other.gameObject.name); // 測試碰撞
-
-        if (other.CompareTag("Ghost"))
+        if (other.CompareTag("Ghost") && !isInvincible) // 只有當玩家不在無敵狀態時才扣血
         {
-            Debug.Log("碰到了鬼魂！");
-
-            if (heartManager != null)
-            {
-                heartManager.TakeDamage();
-                Debug.Log("成功扣血！");
-            }
-            else
-            {
-                Debug.LogError("HeartManager 未找到！");
-            }
+            heartManager.TakeDamage(); // 扣一顆愛心
+            StartCoroutine(InvincibilityCoroutine()); // 啟動無敵時間
         }
     }
 
-    void Update()
+    // 無敵時間協程
+    private System.Collections.IEnumerator InvincibilityCoroutine()
     {
-        int ghostLayerMask = LayerMask.GetMask("Ghost"); // 確保 Ghost 層級存在
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3f, ghostLayerMask);
-
-        if (hitColliders.Length > 0)
-        {
-            foreach (Collider hit in hitColliders)
-            {
-                Debug.Log("偵測到鬼魂：" + hit.gameObject.name);
-            }
-        }
-        else
-        {
-            Debug.Log("沒有偵測到任何鬼魂！");
-        }
+        isInvincible = true; // 設為無敵
+        yield return new WaitForSeconds(invincibilityDuration); // 等待 1 秒
+        isInvincible = false; // 取消無敵
     }
-
-
 }
