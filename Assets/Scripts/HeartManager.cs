@@ -1,61 +1,52 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class HeartManager : MonoBehaviour
 {
-    public GameObject heartPrefab;  // ·R¤ßªº Prefab (PNG ¹Ï¤ù)
-    public Transform heartContainer;  // ·R¤ßªº®e¾¹
-    public int maxHealth = 5;  // ª±®a³Ì¤j¥Í©R
+    public GameObject heartPrefab;  // æ„›å¿ƒçš„ Prefab (PNG åœ–ç‰‡)
+    public Transform heartContainer;  // æ„›å¿ƒ UI çš„çˆ¶ç‰©ä»¶
+    public int maxHealth = 5;  // æœ€å¤§ç”Ÿå‘½å€¼
     private int currentHealth;
-    private GameObject[] hearts;  // ¥Î¨Ó¦sÀx¥Í¦¨ªº·R¤ß
+    private GameObject[] hearts;  // å­˜æ”¾æ‰€æœ‰æ„›å¿ƒçš„é™£åˆ—
 
     void Start()
     {
         currentHealth = maxHealth;
-        hearts = new GameObject[maxHealth];  // ªì©l¤Æ·R¤ß®e¾¹
+        hearts = new GameObject[maxHealth];  // åˆå§‹åŒ–æ„›å¿ƒé™£åˆ—
 
-        // ÁôÂÃ­ì©l·R¤ßª«¥ó
+        // éš±è—åŸå§‹çš„ heartPrefab
         heartPrefab.SetActive(false);
 
-        InitializeHearts();  // ªì©l¤Æ·R¤ßÅã¥Ü
+        InitializeHearts();  // ç”¢ç”Ÿæ„›å¿ƒ UI
     }
 
-    // ªì©l¤Æ·R¤ßÅã¥Ü
+    // åˆå§‹åŒ–æ„›å¿ƒ UI
     void InitializeHearts()
     {
-        // ®Ú¾Ú maxHealth Åã¥Ü·R¤ß
         for (int i = 0; i < maxHealth; i++)
         {
-            // ¥Í¦¨·R¤ß clone ¨Ã²K¥[¨ì®e¾¹¤¤
-            hearts[i] = Instantiate(heartPrefab, heartContainer);
-            hearts[i].SetActive(true);  // Åã¥Ü·R¤ß
+            hearts[i] = Instantiate(heartPrefab, heartContainer); // è¤‡è£½æ„›å¿ƒ Prefab
+            hearts[i].SetActive(true);  // é¡¯ç¤ºæ„›å¿ƒ
         }
     }
 
-    // ·íª±®a¨ü¨ì¶Ë®`®É¡A´î¤Ö¥Í©R¨Ã§ó·s·R¤ßÅã¥Ü
+    // ç©å®¶å—åˆ°å‚·å®³æ™‚ï¼Œæ¸›å°‘ç”Ÿå‘½å€¼ä¸¦æ›´æ–° UI
     public void TakeDamage()
     {
         if (currentHealth > 0)
         {
             currentHealth--;
-            UpdateHearts();  // §ó·s·R¤ßÅã¥Ü
+            Debug.Log("ç•¶å‰ç”Ÿå‘½å€¼ï¼š" + currentHealth);
+            UpdateHearts();
         }
     }
 
-    // §ó·s·R¤ßÅã¥Ü
+    // æ›´æ–°æ„›å¿ƒ UI
     void UpdateHearts()
     {
-        // ®Ú¾Ú³Ñ¾l¥Í©R§ó·sÅã¥Üªº·R¤ß¼Æ¶q
         for (int i = 0; i < maxHealth; i++)
         {
-            if (i < currentHealth)
-            {
-                hearts[i].SetActive(true);  // Åã¥Ü·R¤ß
-            }
-            else
-            {
-                hearts[i].SetActive(false);  // ÁôÂÃ·R¤ß
-            }
+            hearts[i].SetActive(i < currentHealth);  // åªé¡¯ç¤ºå‰©é¤˜çš„æ„›å¿ƒ
         }
     }
 }
