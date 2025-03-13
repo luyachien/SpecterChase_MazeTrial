@@ -4,7 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     private HeartManager heartManager;
     private bool isInvincible = false; // 是否處於無敵狀態
-    public float invincibilityDuration = 0.5f; // 無敵時間 (0.5秒)
+    public float invincibilityDuration = 0.25f; // 無敵時間 (0.5秒)
 
     void Start()
     {

@@ -43882,7 +43882,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heartPrefab: {fileID: 1772102685}
   heartContainer: {fileID: 1996355023}
-  gameOverPanel: {fileID: 0}
   maxHealth: 5
 --- !u!4 &618416332
 Transform:
@@ -55078,8 +55077,8 @@ MonoBehaviour:
   maxGhosts: 5
   minPatrolPoints: 3
   maxPatrolPoints: 5
-  mazeBoundsMin: {x: -35, y: 1, z: -50}
-  mazeBoundsMax: {x: 38, y: 1, z: 45}
+  mazeBoundsMin: {x: -23, y: 1, z: -48}
+  mazeBoundsMax: {x: 45, y: 1, z: 45}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
