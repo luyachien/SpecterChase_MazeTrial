@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,5 +44,11 @@ public class GameManager : MonoBehaviour
             gateAnimator.SetTrigger("Open"); // 觸發開門動畫
             Debug.Log("門已開啟！");
         }
+    }
+
+    public void EscapeMaze() // 當玩家成功逃出
+    {
+        Debug.Log("闖關成功！切換到遊戲結束畫面");
+        SceneManager.LoadScene("WinScene"); // 切換場景
     }
 }
