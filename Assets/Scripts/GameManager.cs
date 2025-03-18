@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         coinCount++;
         coinText.text = "Coins: " + coinCount;
 
-        if (coinCount >= 20) // 當金幣達到 20 個時，顯示開關
+        if (coinCount >= 2) // 當金幣達到 20 個時，顯示開關
         {
             switchLever.SetActive(true);
         }

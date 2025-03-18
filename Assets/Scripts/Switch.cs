@@ -13,7 +13,7 @@ public class Switch : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.instance.coinCount >= 20) // 改成從 GameManager 取得金幣數量
+        if (GameManager.instance.coinCount >= 2) // 改成從 GameManager 取得金幣數量
         {
             gameObject.SetActive(true); // 顯示開關
         }
