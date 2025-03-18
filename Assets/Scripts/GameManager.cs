@@ -1,13 +1,15 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public int coinCount = 0;
     public TMP_Text coinText;
+
+    public GameObject switchLever; // 拖曳開關物件
+    public Animator gateAnimator; // 拖曳柵門的 Animator
 
     void Awake()
     {
@@ -18,5 +20,28 @@ public class GameManager : MonoBehaviour
     {
         coinCount++;
         coinText.text = "Coins: " + coinCount;
+
+        if (coinCount >= 20) // 當金幣達到 20 個時，顯示開關
+        {
+            switchLever.SetActive(true);
+        }
+    }
+
+    private void ShowSwitch()
+    {
+        if (switchLever != null)
+        {
+            switchLever.SetActive(true); // 顯示開關
+            Debug.Log("開關已顯示！");
+        }
+    }
+
+    public void OpenGate()
+    {
+        if (gateAnimator != null)
+        {
+            gateAnimator.SetTrigger("Open"); // 觸發開門動畫
+            Debug.Log("門已開啟！");
+        }
     }
 }

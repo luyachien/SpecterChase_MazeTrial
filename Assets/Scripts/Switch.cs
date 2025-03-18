@@ -2,9 +2,29 @@
 
 public class Switch : MonoBehaviour
 {
-    public GameObject door; // 連接的門
-
+    public Animator switchAnimator;
+    public Animator doorAnimator;
     private bool canActivate = false;
+
+    void Start()
+    {
+        gameObject.SetActive(false); // 開始時隱藏開關
+    }
+
+    void Update()
+    {
+        if (GameManager.instance.coinCount >= 20) // 改成從 GameManager 取得金幣數量
+        {
+            gameObject.SetActive(true); // 顯示開關
+        }
+
+        if (canActivate && Input.GetKeyDown(KeyCode.E)) // 玩家在範圍內且按下 E
+        {
+            Debug.Log("門開啟！");
+            switchAnimator.SetTrigger("Pull"); // 播放拉霸動畫
+            doorAnimator.SetTrigger("Open"); // 觸發動畫
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,15 +40,6 @@ public class Switch : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canActivate = false;
-        }
-    }
-
-    void Update()
-    {
-        if (canActivate && Input.GetKeyDown(KeyCode.E)) // 玩家在範圍內且按下 E
-        {
-            Debug.Log("門開啟！");
-            door.SetActive(false); // 隱藏門（可改成動畫）
         }
     }
 }
