@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
     public void AddCoin()
     {
         coinCount++;
-        coinText.text = "Coins: " + coinCount;
+        coinText.text = "x " + coinCount;
 
-        if (coinCount >= 2) // 當金幣達到 20 個時，顯示開關
+        if (coinCount >= 20) // 當金幣達到 20 個時，顯示開關
         {
             switchLever.SetActive(true);
         }
