@@ -4,15 +4,16 @@ using UnityEngine.AI;
 
 public class GhostManager : MonoBehaviour
 {
-    public GameObject ghostPrefab; 
+    public GameObject ghostPrefab;
     public int minGhosts = 3;
     public int maxGhosts = 5;
     public int minPatrolPoints = 3;
     public int maxPatrolPoints = 5;
     public Vector3 mazeBoundsMin;
     public Vector3 mazeBoundsMax;
-    public LayerMask groundLayer;
-    public float navMeshSampleDistance = 2.0f; // NavMesh範圍檢測距離
+    public LayerMask obstacleLayer;
+    public float navMeshSampleDistance = 3.0f;
+    public float wallCheckDistance = 2.0f;
 
     private List<GameObject> ghosts = new List<GameObject>();
 
@@ -32,8 +33,8 @@ public class GhostManager : MonoBehaviour
 
     void SpawnGhost()
     {
-        Vector3 spawnPosition = GetValidNavMeshPosition();
-        if (spawnPosition == Vector3.zero) return; // 如果沒找到可行走位置，就不生成
+        Vector3 spawnPosition = GetValidSpawnPosition();
+        if (spawnPosition == Vector3.zero) return;
 
         GameObject ghost = Instantiate(ghostPrefab, spawnPosition, Quaternion.identity);
         ghosts.Add(ghost);
@@ -42,9 +43,9 @@ public class GhostManager : MonoBehaviour
         ghostController.patrolPoints = GeneratePatrolRoute();
     }
 
-    Vector3 GetValidNavMeshPosition()
+    Vector3 GetValidSpawnPosition()
     {
-        for (int i = 0; i < 10; i++) // 最多嘗試 10 次
+        for (int i = 0; i < 20; i++)
         {
             float x = Random.Range(mazeBoundsMin.x, mazeBoundsMax.x);
             float z = Random.Range(mazeBoundsMin.z, mazeBoundsMax.z);
@@ -53,11 +54,36 @@ public class GhostManager : MonoBehaviour
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPosition, out hit, navMeshSampleDistance, NavMesh.AllAreas))
             {
-                return hit.position; // 返回可行走區域的點
+                Vector3 finalPosition = hit.position;
+                finalPosition.y += 1;
+
+                if (!IsNearWall(finalPosition) && IsNavMeshWalkable(finalPosition))
+                {
+                    return finalPosition;
+                }
             }
         }
-        Debug.LogWarning("Failed to find a valid NavMesh position.");
+        Debug.LogWarning("Failed to find a valid spawn position.");
         return Vector3.zero;
+    }
+
+    bool IsNearWall(Vector3 position)
+    {
+        Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+        foreach (Vector3 dir in directions)
+        {
+            if (Physics.Raycast(position, dir, wallCheckDistance, obstacleLayer))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool IsNavMeshWalkable(Vector3 position)
+    {
+        NavMeshHit hit;
+        return !NavMesh.Raycast(position, position + Vector3.down * 2, out hit, NavMesh.AllAreas);
     }
 
     Transform[] GeneratePatrolRoute()
@@ -67,8 +93,8 @@ public class GhostManager : MonoBehaviour
 
         for (int i = 0; i < patrolCount; i++)
         {
-            Vector3 patrolPos = GetValidNavMeshPosition();
-            if (patrolPos == Vector3.zero) continue; 
+            Vector3 patrolPos = GetValidSpawnPosition();
+            if (patrolPos == Vector3.zero) continue;
 
             GameObject patrolPoint = new GameObject("PatrolPoint" + i);
             patrolPoint.transform.position = patrolPos;

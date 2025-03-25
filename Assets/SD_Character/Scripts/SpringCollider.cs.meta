@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: fcb73b690c023734fb267911061a15c6
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102300
+  packageName: SD Martial Arts Girl Xia-Chan
+  packageVersion: 1.01
+  assetPath: Assets/SD_Character/Scripts/SpringCollider.cs
+  uploadId: 207379

@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: d0ba25a962d71894b8027f5e230790df
+timeCreated: 1507342703
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102300
+  packageName: SD Martial Arts Girl Xia-Chan
+  packageVersion: 1.01
+  assetPath: Assets/SD_Character/Scripts/SampleAnimation.cs
+  uploadId: 207379

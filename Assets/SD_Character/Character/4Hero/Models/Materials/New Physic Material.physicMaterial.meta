@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 518b59df4287cb847a60944328836d62
+timeCreated: 1507633060
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 13400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102300
+  packageName: SD Martial Arts Girl Xia-Chan
+  packageVersion: 1.01
+  assetPath: Assets/SD_Character/Character/4Hero/Models/Materials/New Physic Material.physicMaterial
+  uploadId: 207379
