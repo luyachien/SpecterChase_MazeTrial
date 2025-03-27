@@ -87544,11 +87544,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 884374718240626562, guid: 0aa37b6666ba4d642921aa823a3add65, type: 3}
       propertyPath: m_Size.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 884374718240626562, guid: 0aa37b6666ba4d642921aa823a3add65, type: 3}
       propertyPath: m_Center.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 884374718240626562, guid: 0aa37b6666ba4d642921aa823a3add65, type: 3}
       propertyPath: m_IsTrigger
@@ -118718,8 +118718,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1.2}
-  m_Center: {x: 0.010000035, y: -0.0000001527369, z: 0.5}
+  m_Size: {x: 1, y: 1, z: 2}
+  m_Center: {x: 0.010000035, y: -0.0000001527369, z: 0.8}
 --- !u!95 &1624792413
 Animator:
   serializedVersion: 7

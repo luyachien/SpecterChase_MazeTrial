@@ -9,6 +9,8 @@ public class CoinManager : MonoBehaviour
     public GameObject switchObject; // 開關物件
     public Text coinText; // 顯示金幣數量的 UI（如果有的話）
 
+    public int CurrentCoins => currentCoins;
+
     void Start()
     {
         switchObject.SetActive(false); // 一開始隱藏開關

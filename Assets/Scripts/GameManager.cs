@@ -51,4 +51,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("闖關成功！切換到遊戲結束畫面");
         SceneManager.LoadScene("WinScene"); // 切換場景
     }
+
+    public int GetCoinCount()
+    {
+        return coinCount;
+    }
 }
