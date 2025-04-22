@@ -5,8 +5,8 @@ using UnityEngine.AI;
 public class GhostManager : MonoBehaviour
 {
     public GameObject ghostPrefab;
-    public int minGhosts = 3;
-    public int maxGhosts = 5;
+    public int minGhosts = 5;
+    public int maxGhosts = 8;
     public int minPatrolPoints = 3;
     public int maxPatrolPoints = 5;
     public Vector3 mazeBoundsMin;

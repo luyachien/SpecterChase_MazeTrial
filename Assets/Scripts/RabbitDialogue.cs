@@ -19,9 +19,12 @@ public class RabbitDialogue : MonoBehaviour
     private bool isPlayerNear = false;
     private bool isDialogueActive = false;
 
+    [Header("對話音效")]
+    public AudioSource audioSource;       // 用來播放音效的 AudioSource
+    public AudioClip dialogueClip;        // 對話音效
+
     void Start()
     {
-        // 初始化
         if (floatingDialogue != null && floatingImages.Length > 0)
         {
             StartCoroutine(LoopFloatingDialogue());
@@ -38,7 +41,6 @@ public class RabbitDialogue : MonoBehaviour
 
     void Update()
     {
-        // 玩家按下 R 鍵時，顯示下一張對話框
         if (isPlayerNear && Input.GetKeyDown(KeyCode.R))
         {
             if (!isDialogueActive)
@@ -57,19 +59,21 @@ public class RabbitDialogue : MonoBehaviour
         while (true)
         {
             floatingDialogue.sprite = floatingImages[floatingIndex]; // 切換對話框圖片
-            floatingIndex = (floatingIndex + 1) % floatingImages.Length; // 循環 A~C
-            yield return new WaitForSeconds(2f); // 每 2 秒切換一次
+            floatingIndex = (floatingIndex + 1) % floatingImages.Length;
+            yield return new WaitForSeconds(2f);
         }
     }
 
     void StartDialogue()
     {
         isDialogueActive = true;
-        floatingDialogue.gameObject.SetActive(false); // 隱藏兔子頭上的對話框
-        interactText.SetActive(false); // 隱藏 "按下 R" 提示
-        mainDialogue.gameObject.SetActive(true); // 顯示畫面中央的對話框
+        floatingDialogue.gameObject.SetActive(false);
+        interactText.SetActive(false);
+        mainDialogue.gameObject.SetActive(true);
         dialogueIndex = 0;
-        mainDialogue.sprite = dialogueImages[dialogueIndex]; // 顯示第一張 D
+        mainDialogue.sprite = dialogueImages[dialogueIndex];
+
+        PlayDialogueSound(); // 播放對話音效
     }
 
     void ShowNextDialogue()
@@ -77,19 +81,28 @@ public class RabbitDialogue : MonoBehaviour
         dialogueIndex++;
         if (dialogueIndex < dialogueImages.Length)
         {
-            mainDialogue.sprite = dialogueImages[dialogueIndex]; // 顯示下一張對話
+            mainDialogue.sprite = dialogueImages[dialogueIndex];
+            PlayDialogueSound(); // 播放對話音效
         }
         else
         {
-            EndDialogue(); // 對話結束
+            EndDialogue();
         }
     }
 
     void EndDialogue()
     {
         isDialogueActive = false;
-        mainDialogue.gameObject.SetActive(false); // 隱藏畫面中央的對話框
-        floatingDialogue.gameObject.SetActive(true); // 重新顯示兔子頭上的對話框
+        mainDialogue.gameObject.SetActive(false);
+        floatingDialogue.gameObject.SetActive(true);
+    }
+
+    void PlayDialogueSound()
+    {
+        if (audioSource != null && dialogueClip != null)
+        {
+            audioSource.PlayOneShot(dialogueClip);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -97,7 +110,7 @@ public class RabbitDialogue : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerNear = true;
-            interactText.SetActive(true); // 顯示 "按下 R 鍵"
+            interactText.SetActive(true);
         }
     }
 
@@ -106,7 +119,7 @@ public class RabbitDialogue : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerNear = false;
-            interactText.SetActive(false); // 隱藏 "按下 R 鍵"
+            interactText.SetActive(false);
         }
     }
 }
