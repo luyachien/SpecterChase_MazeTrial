@@ -1,8 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class WinSceneManager : MonoBehaviour
 {
+    [Header("點擊音效")]
+    public AudioSource audioSource;
+    public AudioClip clickSound;
+
+    private bool isClicked = false;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -11,11 +18,30 @@ public class WinSceneManager : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("MazeScene");
+        if (!isClicked)
+        {
+            isClicked = true;
+            StartCoroutine(PlayClickAndLoadScene("MazeScene"));
+        }
     }
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        if (!isClicked)
+        {
+            isClicked = true;
+            StartCoroutine(PlayClickAndLoadScene("MainMenu"));
+        }
+    }
+
+    private IEnumerator PlayClickAndLoadScene(string sceneName)
+    {
+        if (audioSource != null && clickSound != null)
+        {
+            audioSource.PlayOneShot(clickSound);
+            yield return new WaitForSeconds(clickSound.length);
+        }
+
+        SceneManager.LoadScene(sceneName);
     }
 }
