@@ -17,7 +17,6 @@ public class CoinCollect : MonoBehaviour
             if (coinSound != null && audioSource != null)
             {
                 AudioSource.PlayClipAtPoint(coinSound, transform.position, 2.5f); // 音量2
-
             }
 
             GameManager.instance.AddCoin(); // 增加金幣數量

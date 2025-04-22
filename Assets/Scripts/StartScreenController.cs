@@ -2,14 +2,21 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Collections;
+
 
 public class StartScreenController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Image StartImage;
-    public string sceneToLoad = "MazeScene"; // 換成你的遊戲場景名稱
+    public string sceneToLoad = "MazeScene";
     public float fadeDuration = 1.5f;
 
+    [Header("點擊音效")]
+    public AudioSource audioSource;
+    public AudioClip clickSound;
+
     private bool isHovered = false;
+    private bool isClicked = false; // 防止重複點擊
     private Color originalColor;
 
     void Start()
@@ -20,27 +27,28 @@ public class StartScreenController : MonoBehaviour, IPointerEnterHandler, IPoint
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // 點擊任意地方
+        if (Input.GetMouseButtonDown(0) && !isClicked)
         {
-            SceneManager.LoadScene(sceneToLoad);
+            isClicked = true;
+            StartCoroutine(PlayClickAndLoadScene());
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         isHovered = true;
-        StartImage.color = new Color(1f, 1f, 1f, StartImage.color.a); // 變白
+        StartImage.color = new Color(1f, 1f, 1f, StartImage.color.a);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         isHovered = false;
-        StartImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, StartImage.color.a); // 還原
+        StartImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, StartImage.color.a);
     }
 
     System.Collections.IEnumerator FadeLoop()
     {
-        while (true)
+        while (!isClicked)
         {
             yield return StartCoroutine(FadeImage(0f, 1f));
             yield return StartCoroutine(FadeImage(1f, 0f));
@@ -60,5 +68,16 @@ public class StartScreenController : MonoBehaviour, IPointerEnterHandler, IPoint
         }
         Color finalColor = isHovered ? Color.white : originalColor;
         StartImage.color = new Color(finalColor.r, finalColor.g, finalColor.b, to);
+    }
+
+    IEnumerator PlayClickAndLoadScene()
+    {
+        if (audioSource != null && clickSound != null)
+        {
+            audioSource.PlayOneShot(clickSound);
+            yield return new WaitForSeconds(clickSound.length); // 等音效播完
+        }
+
+        SceneManager.LoadScene(sceneToLoad);
     }
 }
