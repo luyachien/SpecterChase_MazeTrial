@@ -6,6 +6,10 @@ public class Switch : MonoBehaviour
     public Animator doorAnimator;
     private bool canActivate = false;
 
+    [Header("音效設定")]
+    public AudioClip SwitchOnSound; // 開門音效
+    public AudioSource audioSource;
+
     void Start()
     {
         gameObject.SetActive(false); // 開始時隱藏開關
@@ -22,7 +26,12 @@ public class Switch : MonoBehaviour
         {
             Debug.Log("門開啟！");
             switchAnimator.SetTrigger("Pull"); // 播放拉霸動畫
+            if (audioSource != null && SwitchOnSound != null)
+            {
+                audioSource.PlayOneShot(SwitchOnSound, 1.5f); // 1.5f 調整音量
+            }
             doorAnimator.SetTrigger("Open"); // 觸發動畫
+            GameManager.instance.OpenGateAudio();
         }
     }
 

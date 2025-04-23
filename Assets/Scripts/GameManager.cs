@@ -9,12 +9,21 @@ public class GameManager : MonoBehaviour
     public int coinCount = 0;
     public TMP_Text coinText;
 
-    public GameObject switchLever; // 拖曳開關物件
-    public Animator gateAnimator; // 拖曳柵門的 Animator
+    public GameObject switchLever;
+    public Animator gateAnimator;
+
+    [Header("音效設定")]
+    public AudioClip gateOpenSound; // 開門音效
+    public AudioSource audioSource;
 
     void Awake()
     {
         if (instance == null) instance = this;
+    }
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>(); // 取得音效元件
     }
 
     public void AddCoin()
@@ -22,7 +31,7 @@ public class GameManager : MonoBehaviour
         coinCount++;
         coinText.text = "x " + coinCount;
 
-        if (coinCount >= 20) // 當金幣達到 20 個時，顯示開關
+        if (coinCount >= 20)
         {
             switchLever.SetActive(true);
         }
@@ -32,7 +41,7 @@ public class GameManager : MonoBehaviour
     {
         if (switchLever != null)
         {
-            switchLever.SetActive(true); // 顯示開關
+            switchLever.SetActive(true);
             Debug.Log("開關已顯示！");
         }
     }
@@ -41,15 +50,27 @@ public class GameManager : MonoBehaviour
     {
         if (gateAnimator != null)
         {
-            gateAnimator.SetTrigger("Open"); // 觸發開門動畫
+            gateAnimator.SetTrigger("Open"); // 播放開門動畫
             Debug.Log("門已開啟！");
         }
     }
-
-    public void EscapeMaze() // 當玩家成功逃出
+    public void OpenGateAudio()
+    {
+        // 播放開門音效
+        if (audioSource != null && gateOpenSound != null)
+        {
+            audioSource.PlayOneShot(gateOpenSound, 1.5f); // 1.5f 調整音量
+        }
+        else
+        {
+            Debug.LogError("音效播放失敗：audioSource 或 gateOpenSound 為 null！");
+        }
+    }
+    
+public void EscapeMaze()
     {
         Debug.Log("闖關成功！切換到遊戲結束畫面");
-        SceneManager.LoadScene("WinScene"); // 切換場景
+        SceneManager.LoadScene("WinScene");
     }
 
     public int GetCoinCount()
