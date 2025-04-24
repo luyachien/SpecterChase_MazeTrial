@@ -29,7 +29,7 @@ public class PlayerSoundManager : MonoBehaviour
     {
         if (characterController.isGrounded) // 玩家站在地面上
         {
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) // 奔跑
+            if ((Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
                 PlaySound(runSound);
             }
