@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // 引入 SceneManagement 來切換場景
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class HeartManager : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class HeartManager : MonoBehaviour
     public int maxHealth = 5;  // 最大生命值
     private int currentHealth;
     private GameObject[] hearts;  // 存放所有愛心的陣列
+    
+    [Header("音效設定")]
+    public AudioClip GameOverSound;
+    public AudioSource audioSource;
+    public GameObject bgmManager;
 
     void Start()
     {
@@ -60,6 +66,27 @@ public class HeartManager : MonoBehaviour
     // 遊戲結束處理
     void GameOver()
     {
+        if (audioSource != null && GameOverSound != null)
+        {
+            StartCoroutine(PlayGameOverSoundAndEscape()); // 啟動協程
+        }
+    }
+
+    private IEnumerator PlayGameOverSoundAndEscape()
+    {
+        // 停止背景音樂
+        if (bgmManager != null)
+        {
+            AudioSource bgmSource = bgmManager.GetComponent<AudioSource>();
+            if (bgmSource != null)
+            {
+                bgmSource.Stop();
+                Debug.Log("背景音樂已停止！");
+            }
+        }
+
+        audioSource.PlayOneShot(GameOverSound, 1.5f); // 播放音效
+        yield return new WaitForSeconds(GameOverSound.length); // 等待音效播放完畢
         Debug.Log("遊戲結束！");
         SceneManager.LoadScene("GameOverScene"); // 切換到 Game Over 畫面
     }
