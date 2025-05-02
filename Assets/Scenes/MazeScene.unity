@@ -12197,19 +12197,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2137986219}
+    m_TransformParent: {fileID: 1206709969}
     m_Modifications:
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.59
+      value: 0.21500003
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.17
+      value: 0.217
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430818, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12245,7 +12245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430821, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: field of view
-      value: 87
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430821, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_FOVAxisMode
@@ -12253,7 +12253,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430821, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_FocalLength
-      value: 21.075603
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 9005220659476430821, guid: 2d3a85ecde41a8246a79669975912b74, type: 3}
       propertyPath: m_SensorSize.x
@@ -55224,13 +55224,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700127407}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 3.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2137986219}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!114 &700127409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94424,6 +94424,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2285145043486707756, guid: 42471d84493492140af70847f296bd30, type: 3}
   m_PrefabInstance: {fileID: 1206208840}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1206709969 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4135013735270702856, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 1497865938}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1206999430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109780,7 +109785,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.2
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0}
@@ -121390,6 +121395,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5393215578589016640, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 5393215578589016641, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -121427,12 +121436,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: TopClamp
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: MoveSpeed
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: JumpHeight
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      propertyPath: BottomClamp
+      value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: SprintSpeed
@@ -121503,10 +121520,10 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 158879787}
-    - targetCorrespondingSourceObject: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 700127408}
+    - targetCorrespondingSourceObject: {fileID: 4135013735270702856, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 158879787}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       insertIndex: -1
