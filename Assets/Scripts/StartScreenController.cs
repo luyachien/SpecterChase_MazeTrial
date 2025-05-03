@@ -27,7 +27,7 @@ public class StartScreenController : MonoBehaviour, IPointerEnterHandler, IPoint
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isClicked)
+        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
         {
             isClicked = true;
             StartCoroutine(PlayClickAndLoadScene());
